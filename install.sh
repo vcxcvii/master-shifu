@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 set -euo pipefail
 
-REPO="https://github.com/<your-gh>/master-shifu.git"
+REPO="https://github.com/vcxcvii/master-shifu.git"
 INSTALL_DIR="${HOME}/.agents/skills/master-shifu"
 CLAUDE_DIR="${HOME}/.claude/skills/master-shifu"
 
