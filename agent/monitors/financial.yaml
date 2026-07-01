@@ -1,0 +1,9 @@
+# Financial lens monitors
+monitors:
+  - name: sec-filings
+    description: Watch SEC EDGAR for new 10-K/10-Q filings
+    schedule: daily
+    urls: []
+    css_selector: "table.table, .content, . filings"
+    goal: "Alert when new 10-K, 10-Q, or material event filings appear"
+    lens: financial

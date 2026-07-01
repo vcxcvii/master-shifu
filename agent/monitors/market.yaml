@@ -1,0 +1,17 @@
+# Market lens monitors
+monitors:
+  - name: industry-news
+    description: Watch industry news for relevant developments
+    schedule: daily
+    urls: []
+    css_selector: "article, .post, .news-item"
+    goal: "Alert on industry news, regulatory changes, or market shifts"
+    lens: market
+
+  - name: regulatory
+    description: Watch regulatory pages for compliance changes
+    schedule: weekly
+    urls: []
+    css_selector: "main, .content, .regulation"
+    goal: "Alert when regulations, policies, or compliance requirements change"
+    lens: market

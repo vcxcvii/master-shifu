@@ -1,0 +1,19 @@
+# Competition lens monitors
+# Add URLs for your competitors to watch
+monitors:
+  - name: competitor-pricing
+    description: Watch competitor pricing pages for changes
+    schedule: every 6 hours
+    urls:
+      - https://example.com/pricing
+    css_selector: ".pricing-table, .plans, [class*=price]"
+    goal: "Alert when pricing, plans, or features change"
+    lens: competition
+
+  - name: competitor-product
+    description: Watch competitor product pages for new features
+    schedule: daily
+    urls: []
+    css_selector: ".features, .product-description, .changelog"
+    goal: "Alert when new products, features, or capabilities are announced"
+    lens: competition

@@ -1,0 +1,5 @@
+pipeline/raw_text/
+pipeline/__pycache__/
+__pycache__/
+*.pyc
+.observations/

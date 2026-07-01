@@ -1,0 +1,70 @@
+name: Web Monitor
+on:
+  schedule:
+    - cron: "0 */6 * * *"   # every 6 hours
+  workflow_dispatch:         # manual trigger
+    inputs:
+      monitor:
+        description: 'Monitor name or "all"'
+        required: true
+        default: all
+
+jobs:
+  scrape:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          # Need full history for diff detection + push back
+          fetch-depth: 0
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install Scrapling
+        run: |
+          pip install scrapling
+
+      - name: Run monitors
+        run: |
+          python scripts/monitor/spider.py --monitor ${{ github.event.inputs.monitor || 'all' }}
+
+      - name: Run diff + judge
+        id: judge
+        run: |
+          # Check each lens monitor for changes
+          for lens in competition market financial; do
+            for yaml in agent/monitors/$lens.yaml; do
+              if [ -f "$yaml" ]; then
+                python -c "
+import yaml, json, sys
+sys.path.insert(0, 'scripts/monitor')
+from spider import diff_monitor, judge_changes
+with open('$yaml') as f:
+    config = yaml.safe_load(f)
+for m in config.get('monitors', []):
+    report = diff_monitor(m['name'])
+    judged = judge_changes(report)
+    if judged:
+        out = f'data/monitors/{judged[\"lens\"]}/{judged[\"monitor\"]}/change.json'
+        with open(out, 'w') as f:
+            json.dump(judged, f, indent=2)
+        print(f'Change detected: {judged[\"monitor\"]}')
+"
+              fi
+            done
+          done
+
+      - name: Commit changes
+        run: |
+          git config user.name "master-shifu-bot"
+          git config user.email "bot@master-shifu"
+          git add data/monitors/
+          if git diff --cached --quiet; then
+            echo "No changes to commit"
+          else
+            git commit -m "monitor: automatic scrape update [skip ci]"
+            git push
+          fi
