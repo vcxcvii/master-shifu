@@ -162,7 +162,6 @@ master-shifu/
 ├── scripts/
 │   ├── monitor/spider.py   # Scrapling spider for scheduled monitoring
 │   └── setup-monitors.sh   # Interactive monitor setup
-├── pipeline/               # PDF extraction (one-time, offline)
 ├── .github/workflows/      # GitHub Actions: free scheduled monitoring
 ├── install.sh              # One-click install
 ├── CLAUDE.md               # Claude Code config
